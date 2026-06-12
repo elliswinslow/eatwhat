@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>汉成帝后宫文字养成卡片</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background:
+        radial-gradient(circle at 12% 8%, #ffe8ef 0, transparent 32%),
+        radial-gradient(circle at 88% 92%, #dff6ef 0, transparent 36%),
+        linear-gradient(135deg, #fffaf4, #f7fbff);
+      font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      color: #4f4a45;
+    }
+
+    .phone {
+      width: 360px;
+      height: 740px;
+      border-radius: 34px;
+      padding: 12px;
+      background: linear-gradient(145deg, #ffffff, #fff8ee);
+      border: 1px solid rgba(213, 180, 135, 0.75);
+      box-shadow: 0 18px 42px rgba(148, 107, 62, 0.22);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .phone::before {
+      content: "";
+      position: absolute;
+      top: 7px;
+      left: 50%;
+      width: 92px;
+      height: 6px;
+      border-radius: 99px;
+      transform: translateX(-50%);
+      background: #dfd4c4;
+      z-index: 5;
+    }
+
+    .screen {
+      height: 100%;
+      padding: 14px 8px 8px;
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+
+    .screen::-webkit-scrollbar {
+      display: none;
+    }
+
+    .hero {
+      padding: 14px;
+      border-radius: 23px;
+      margin-bottom: 10px;
+      background:
+        linear-gradient(rgba(255,255,255,0.74), rgba(255,255,255,0.74)),
+        url("https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=800&q=80");
+      background-size: cover;
+      background-position: center;
+      border: 1px solid rgba(225, 195, 145, 0.95);
+      box-shadow: 0 8px 18px rgba(155, 112, 64, 0.13);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 20px;
+      color: #9b613b;
+      letter-spacing: 1px;
+    }
+
+    .sub {
+      margin-top: 5px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #776b5e;
+    }
+
+    .card {
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.93);
+      border: 1px solid #ead9bd;
+      box-shadow: 0 6px 14px rgba(142, 103, 58, 0.09);
+    }
+
+    .card.pink {
+      border-color: #f3cbd8;
+      background: rgba(255, 249, 252, 0.95);
+    }
+
+    .card.green {
+      border-color: #cce8dc;
+      background: rgba(249, 255, 251, 0.95);
+    }
+
+    .card.gold {
+      border-color: #e9d295;
+      background: rgba(255, 253, 241, 0.96);
+    }
+
+    .title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #96633f;
+    }
+
+    .badge {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #fff5e4;
+      border: 1px solid #ead2aa;
+      color: #93724c;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+    }
+
+    .stat {
+      padding: 7px;
+      border-radius: 13px;
+      background: #fffdf8;
+      border: 1px solid #efe0c9;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .stat b {
+      color: #8f5e38;
+    }
+
+    .bar {
+      height: 7px;
+      margin-top: 4px;
+      border-radius: 999px;
+      background: #eee7dd;
+      overflow: hidden;
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #f2c078, #f2a7bf, #9edfc4);
+      transition: width 0.35s ease;
+    }
+
+    .story-img {
+      display: none;
+      width: 100%;
+      height: 96px;
+      object-fit: cover;
+      border-radius: 15px;
+      border: 1px solid #e5d1b7;
+      margin-bottom: 8px;
+    }
+
+    .story-title {
+      margin: 0 0 7px;
+      font-size: 16px;
+      color: #77543d;
+    }
+
+    .text {
+      font-size: 13px;
+      line-height: 1.72;
+      color: #554d46;
+    }
+
+    .small {
+      font-size: 12px;
+      line-height: 1.65;
+      color: #685f55;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-top: 9px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px 11px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #fff1d9, #fff0f6, #ecfff7);
+      border: 1px solid rgba(224, 192, 150, 0.96);
+      box-shadow: 0 5px 10px rgba(143, 102, 61, 0.13);
+      color: #4f4a45;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: left;
+      line-height: 1.35;
+      cursor: pointer;
+      transition: transform 0.15s ease, filter 0.15s ease;
+    }
+
+    button:active {
+      transform: scale(0.985);
+      filter: brightness(0.98);
+    }
+
+    button:disabled {
+      opacity: 0.48;
+      filter: grayscale(0.5);
+      cursor: not-allowed;
+    }
+
+    .mini-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 7px;
+    }
+
+    .mini-card {
+      padding: 8px;
+      border-radius: 14px;
+      background: #fffefb;
+      border: 1px solid #eadfca;
+      font-size: 12px;
+      line-height: 1.48;
+    }
+
+    .mini-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 4px;
+      font-weight: 700;
+      color: #9b6845;
+    }
+
+    .log {
+      min-height: 38px;
+      padding: 8px;
+      border-radius: 13px;
+      border: 1px dashed #dbc59e;
+      background: #fffdf7;
+      font-size: 12px;
+      line-height: 1.55;
+      color: #6b6156;
+    }
+
+    .footer {
+      padding: 3px 0 8px;
+      text-align: center;
+      font-size: 11px;
+      color: #9a9186;
+    }
+  </style>
+</head>
+<body>
+  <main class="phone">
+    <div class="screen">
+      <section class="hero">
+        <h1>🏯 汉成帝后宫札记</h1>
+        <div class="sub">你是刘骜 · 未央宫生活 · 后妃社交 · 宴饮赏赐 · 月回合养成</div>
+      </section>
+
+      <section class="card pink">
+        <div class="title-row">
+          <span>👑 皇帝面板</span>
+          <span class="badge" id="timeText"></span>
+        </div>
+        <div class="grid">
+          <div class="stat">姓名：<b id="nameText"></b></div>
+          <div class="stat">年龄：<b id="ageText"></b></div>
+          <div class="stat">地点：<b id="locationText"></b></div>
+          <div class="stat">活动：<b id="activityText"></b></div>
+          <div class="stat">私库：<b id="moneyText"></b></div>
+          <div class="stat">物品：<b id="itemText"></b></div>
+          <div class="stat">
+            心情：<b id="moodText"></b>
+            <div class="bar"><span id="moodBar"></span></div>
+          </div>
+          <div class="stat">
+            皇嗣议题：<b id="heirText"></b>
+            <div class="bar"><span id="heirBar"></span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="title-row">
+          <span>📊 人物属性</span>
+          <span class="badge" id="turnText"></span>
+        </div>
+        <div class="grid">
+          <div class="stat">体质：<b id="bodyText"></b><div class="bar"><span id="bodyBar"></span></div></div>
+          <div class="stat">武力：<b id="martialText"></b><div class="bar"><span id="martialBar"></span></div></div>
+          <div class="stat">学识：<b id="learningText"></b><div class="bar"><span id="learningBar"></span></div></div>
+          <div class="stat">威望：<b id="prestigeText"></b><div class="bar"><span id="prestigeBar"></span></div></div>
+        </div>
+      </section>
+
+      <section class="card gold">
+        <div class="title-row">
+          <span>📖 当前剧情</span>
+          <span class="badge">月度推进</span>
+        </div>
+        <img class="story-img" id="storyImage" alt="剧情图片" />
+        <h2 class="story-title" id="storyTitle"></h2>
+        <div class="text" id="storyText"></div>
+        <div class="options" id="optionBox"></div>
+      </section>
+
+      <section class="card green">
+        <div class="title-row">
+          <span>🌸 后宫万象</span>
+          <span class="badge">四条月闻</span>
+        </div>
+        <div class="small" id="haremNewsText"></div>
+      </section>
+
+      <section class="card pink">
+        <div class="title-row">
+          <span>💠 后妃好感</span>
+          <span class="badge">70爱慕 · 100至深</span>
+        </div>
+        <div class="mini-list" id="consortBox"></div>
+      </section>
+
+      <section class="card">
+        <div class="title-row">
+          <span>🏛 朝堂与宗亲</span>
+          <span class="badge">关系网</span>
+        </div>
+        <div class="mini-list" id="ministerBox"></div>
+      </section>
+
+      <section class="card gold">
+        <div class="title-row">
+          <span>🛒 可购物品</span>
+          <span class="badge">a / b / c</span>
+        </div>
+        <div class="mini-list" id="shopBox"></div>
+      </section>
+
+      <section class="card green">
+        <div class="title-row">
+          <span>⚠️ 主线预警</span>
+          <span class="badge" id="warningBadge"></span>
+        </div>
+        <div class="small" id="warningText"></div>
+      </section>
+
+      <section class="card">
+        <div class="title-row">
+          <span>📝 行动记录</span>
+          <span class="badge" id="influenceText"></span>
+        </div>
+        <div class="log" id="logText"></div>
+      </section>
+
+      <div class="footer">✨ 点击选项即可推进一月，剧情与属性实时刷新 ✨</div>
+    </div>
+  </main>
+
+  <script>
+    function clamp(value) {
+      return Math.max(0, Math.min(100, value));
+    }
+
+    function pick(list) {
+      return list[Math.floor(Math.random() * list.length)];
+    }
+
+    function moodMap(value) {
+      if (value >= 85) return "兴致甚好 😊";
+      if (value >= 65) return "心绪平稳 🙂";
+      if (value >= 45) return "略觉疲惫 😐";
+      if (value >= 25) return "烦闷不展 😟";
+      return "身心俱倦 ⚠️";
+    }
+
+    const gameState = {
+      name: "刘骜",
+      age: 19,
+      monthPointer: 0,
+      turn: 1,
+      currentStoryId: "start",
+      location: "未央宫·宣室殿",
+      activity: "初登帝位",
+      money: 100,
+      items: ["组玉佩", "御用漆案", "少府月账"],
+      moodValue: 72,
+      heirPressure: 34,
+      wangInfluence: 62,
+      attrs: {
+        body: 60,
+        martial: 42,
+        learning: 68,
+        prestige: 66
+      },
+      npcs: {
+        xuQueen: {
+          name: "许皇后",
+          role: "皇后",
+          affection: 62,
+          trait: "聪慧端庄，有才情，重礼法",
+          place: "椒房殿",
+          outfit: "曲裾深衣，组玉佩齐整"
+        },
+        ban: {
+          name: "班婕妤",
+          role: "婕妤",
+          affection: 56,
+          trait: "贤德知礼，善辞赋，言语稳妥",
+          place: "增成舍馆",
+          outfit: "素色直裾，发髻简洁"
+        },
+        wei: {
+          name: "卫婕妤",
+          role: "婕妤",
+          affection: 42,
+          trait: "谨慎安静，少言守分",
+          place: "后宫偏殿",
+          outfit: "青色襜褕，佩饰不多"
+        },
+        zhaoFY: {
+          name: "赵飞燕",
+          role: "美人",
+          affection: 38,
+          trait: "舞姿轻盈，善察言色",
+          place: "昭阳舍",
+          outfit: "紫色纱衣，步摇轻巧"
+        },
+        zhaoHD: {
+          name: "赵合德",
+          role: "美人",
+          affection: 36,
+          trait: "娇媚会说话，喜欢被偏爱",
+          place: "昭阳舍",
+          outfit: "绛色深衣，金釦漆奁随侍"
+        },
+        xuMeiren: {
+          name: "许美人",
+          role: "美人",
+          affection: 35,
+          trait: "温和内敛，与许氏略有旧亲",
+          place: "后宫西舍",
+          outfit: "浅黄绢衣，妆容清淡"
+        }
+      },
+      ministers: {
+        wangTaihou: {
+          name: "王政君",
+          role: "皇太后",
+          relation: 58,
+          trait: "宽厚持重，维护王氏"
+        },
+        wangFeng: {
+          name: "王凤",
+          role: "大司马大将军",
+          relation: 44,
+          trait: "强势老练，掌朝中权柄"
+        },
+        liuKang: {
+          name: "刘康",
+          role: "定陶恭王",
+          relation: 46,
+          trait: "善音律，性情隐忍"
+        },
+        zhangFang: {
+          name: "张放",
+          role: "富平侯",
+          relation: 50,
+          trait: "容貌俊美，喜宴游"
+        },
+        banBo: {
+          name: "班伯",
+          role: "中常侍",
+          relation: 48,
+          trait: "耿直敢言，重家风"
+        }
+      },
+      haremNews: [],
+      lastLog: "建始元年夏季五月，你初登帝位，后宫与朝堂都在等你定下第一步。"
+    };
+
+    const storyData = {
+      start: {
+        title: "初登未央",
+        image: "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=800&q=80",
+        location: "未央宫·宣室殿",
+        activity: "初登帝位",
+        text:
+          "时间：建始元年夏季五月\n地点：未央宫宣室殿\n活动：初登帝位\n\n你继位未久，宫中礼仪刚刚理顺。许皇后在椒房殿等候问安，班婕妤送来一卷新抄辞赋，王太后也派人问你晚膳是否去长信宫。赵飞燕、赵合德如今只是美人，住在昭阳舍，近来因乐舞出众常被宫人提起。\n\n少府呈上月账，私库可用百金。你可以赏赐、宴饮、读书，也可以亲近后妃。王凤在前朝掌事，太后多半会护着王氏。这个月你要先稳住宫中人心。",
+        options: [
+          {
+            text: "A. 去椒房殿看望许皇后【需威望50】",
+            nextStoryId: "xuQueen",
+            effects: { money: -8, prestige: 1, xuQueen: 4, moodValue: 2 },
+            condition: () => gameState.attrs.prestige >= 50
+          },
+          {
+            text: "B. 到长信宫向王太后问安【需威望55】",
+            nextStoryId: "taihou",
+            effects: { prestige: 2, wangTaihou: 4, wangInfluence: 1 },
+            condition: () => gameState.attrs.prestige >= 55
+          },
+          {
+            text: "C. 召班婕妤同读辞赋【需学识60】",
+            nextStoryId: "banReading",
+            effects: { learning: 2, ban: 4, moodValue: 2 },
+            condition: () => gameState.attrs.learning >= 60
+          },
+          {
+            text: "D. 往昭阳舍观赵氏姐妹乐舞【需心情50】",
+            nextStoryId: "zhaoDance",
+            effects: { zhaoFY: 3, zhaoHD: 4, moodValue: 4, prestige: -1 },
+            condition: () => gameState.moodValue >= 50
+          }
+        ]
+      },
+
+      xuQueen: {
+        title: "椒房殿闲话",
+        image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80",
+        location: "未央宫·椒房殿",
+        activity: "探望许皇后",
+        text:
+          "你到椒房殿时，许皇后正让女官整理春夏衣料。她起身行礼，语气温和：“陛下登基事务多，今日能来，妾心里就安稳些。”\n\n你与她谈了宫中月例、后妃问安和秋日宴饮。她没有多问前朝，只提醒你刚即位，不宜过分偏宠任何一处。她说话不急，句句都留有余地。临走前，她亲自送你到殿门，说下月可由她主持一次小宴，让各宫妃嫔都露面，免得宫中闲话太多。",
+        options: [
+          {
+            text: "A. 让许皇后主持后宫小宴【需银两20】",
+            nextStoryId: "haremTea",
+            effects: { money: -20, xuQueen: 4, prestige: 3, heirPressure: -2 },
+            condition: () => gameState.money >= 20
+          },
+          {
+            text: "B. 留在椒房殿共用晚膳【需许皇后好感60】",
+            nextStoryId: "restHall",
+            effects: { xuQueen: 5, moodValue: 3, heirPressure: -3 },
+            condition: () => gameState.npcs.xuQueen.affection >= 60
+          },
+          {
+            text: "C. 请许皇后整理后宫名册【需学识62】",
+            nextStoryId: "haremTea",
+            effects: { learning: 1, prestige: 2, xuQueen: 3 },
+            condition: () => gameState.attrs.learning >= 62
+          },
+          {
+            text: "D. 转往昭阳舍，看新排的舞",
+            nextStoryId: "zhaoDance",
+            effects: { zhaoFY: 2, zhaoHD: 2, moodValue: 2 }
+          }
+        ]
+      },
+
+      taihou: {
+        title: "长信宫问安",
+        image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80",
+        location: "长信宫",
+        activity: "向王太后问安",
+        text:
+          "长信宫中礼数周全，王太后问你近来饮食和起居，又提到王凤在前朝劳心。她没有强逼你表态，只说：“朝事有大臣，宫中也要有规矩。你是天子，喜怒都有人看着。”\n\n你陪太后用了一盏浆饮，听她说后宫需以皇后为尊，也需照顾新入宫的美人。王凤随后入殿请安，话不多，却处处显示大司马的分量。这个月若处理得好，王氏会更安心；若处理不好，前朝压力会更重。",
+        options: [
+          {
+            text: "A. 顺着太后，赏王氏宗亲【需银两15】",
+            nextStoryId: "courtMorning",
+            effects: { money: -15, wangTaihou: 4, wangFeng: 3, wangInfluence: 4, prestige: 1 },
+            condition: () => gameState.money >= 15
+          },
+          {
+            text: "B. 温和提及皇权自理【需威望70】",
+            nextStoryId: "courtMorning",
+            effects: { prestige: 4, wangInfluence: -4, wangFeng: -2 },
+            condition: () => gameState.attrs.prestige >= 70
+          },
+          {
+            text: "C. 请太后主持岁时礼仪【需太后关系58】",
+            nextStoryId: "haremTea",
+            effects: { wangTaihou: 4, prestige: 2, heirPressure: -1 },
+            condition: () => gameState.ministers.wangTaihou.relation >= 58
+          },
+          {
+            text: "D. 告退后召班婕妤读书",
+            nextStoryId: "banReading",
+            effects: { ban: 3, learning: 1, moodValue: 2 }
+          }
+        ]
+      },
+
+      banReading: {
+        title: "辞赋清谈",
+        image: "https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=800&q=80",
+        location: "增成舍馆",
+        activity: "与班婕妤读赋",
+        text:
+          "班婕妤把竹简放在漆案上，先问你今日是否劳累。她没有急着献辞，只挑了几句容易入口的话讲。你问她为何从不争同辇之宠，她答得平静：“礼在前，宠在后。妾若只求一时热闹，反叫陛下被人议论。”\n\n她说话不奉承，也不冷淡。你留她同坐片刻，宫人送来温浆。她提议下月可办一场小读会，让后宫少些闲言，多些正经事。你听着舒服，也觉得心绪稳了些。",
+        options: [
+          {
+            text: "A. 设后宫读会，由班婕妤主持【需学识65】",
+            nextStoryId: "haremTea",
+            effects: { ban: 5, learning: 2, prestige: 2 },
+            condition: () => gameState.attrs.learning >= 65
+          },
+          {
+            text: "B. 赐班婕妤宫廷典籍【需银两10】",
+            nextStoryId: "banReading",
+            effects: { money: -10, ban: 4, learning: 1, addItem: ["班婕妤谢笺"] },
+            condition: () => gameState.money >= 10
+          },
+          {
+            text: "C. 召班伯入宫议礼【需班婕妤好感58】",
+            nextStoryId: "courtMorning",
+            effects: { banBo: 4, prestige: 2, ban: 2 },
+            condition: () => gameState.npcs.ban.affection >= 58
+          },
+          {
+            text: "D. 晚间去昭阳舍散心",
+            nextStoryId: "zhaoDance",
+            effects: { zhaoFY: 2, zhaoHD: 3, moodValue: 3 }
+          }
+        ]
+      },
+
+      zhaoDance: {
+        title: "昭阳舍新舞",
+        image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80",
+        location: "未央宫·昭阳舍",
+        activity: "观乐舞",
+        text:
+          "昭阳舍的灯比别处亮些。赵飞燕先上前行礼，话不多，只说新排了一支轻舞。赵合德在旁笑着补了一句：“姐姐练了好几日，陛下若说不好，她今晚可要闷着。”\n\n乐声起后，飞燕舞步轻快，合德坐在近处替你斟酒，偶尔低声解释动作。你没有久饮，只让宫人记下赏赐。两姐妹都很会看你的脸色，也都盼着下月能在大宴上露面。若偏宠太过，椒房殿与长信宫未必高兴。",
+        options: [
+          {
+            text: "A. 赐赵飞燕云英紫裙【需银两12】",
+            nextStoryId: "zhaoDance",
+            effects: { money: -12, zhaoFY: 5, moodValue: 2, prestige: -1, addItem: ["紫裙赏赐簿"] },
+            condition: () => gameState.money >= 12
+          },
+          {
+            text: "B. 赐赵合德金釦漆奁【需银两15】",
+            nextStoryId: "zhaoDance",
+            effects: { money: -15, zhaoHD: 5, moodValue: 3, prestige: -1, addItem: ["漆奁赏赐簿"] },
+            condition: () => gameState.money >= 15
+          },
+          {
+            text: "C. 令赵氏姐妹在宫宴献舞【需心情60】",
+            nextStoryId: "palaceFeast",
+            effects: { zhaoFY: 3, zhaoHD: 3, moodValue: 2, prestige: -1 },
+            condition: () => gameState.moodValue >= 60
+          },
+          {
+            text: "D. 回宣室处理奏牍，稍作收束",
+            nextStoryId: "courtMorning",
+            effects: { prestige: 3, learning: 1, moodValue: -1 }
+          }
+        ]
+      },
+
+      haremTea: {
+        title: "后宫小会",
+        image: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=800&q=80",
+        location: "未央宫·后殿",
+        activity: "后妃社交",
+        text:
+          "后宫小会设在后殿，席位按位分排好。许皇后坐在上首，班婕妤讲了几句辞赋，卫婕妤只安静听着。赵飞燕和赵合德也来得早，行礼周全，没有抢话。\n\n你让众人各献一件擅长之事，不论高低，只图热闹。许皇后称赞班婕妤稳重，赵合德笑着夸飞燕舞得轻。气氛比你想的平和。宫人私下说，陛下若每月都这样安排，后宫闲话能少许多。只是赏赐和宴饮都要花钱，不能日日如此。",
+        options: [
+          {
+            text: "A. 继续每月小会【需银两18】",
+            nextStoryId: "haremTea",
+            effects: { money: -18, prestige: 3, xuQueen: 2, ban: 2, wei: 2, heirPressure: -2 },
+            condition: () => gameState.money >= 18
+          },
+          {
+            text: "B. 点名班婕妤讲辞赋【需学识65】",
+            nextStoryId: "banReading",
+            effects: { ban: 4, learning: 2, prestige: 1 },
+            condition: () => gameState.attrs.learning >= 65
+          },
+          {
+            text: "C. 点名赵飞燕献舞【需赵飞燕好感40】",
+            nextStoryId: "zhaoDance",
+            effects: { zhaoFY: 4, moodValue: 3, prestige: -1 },
+            condition: () => gameState.npcs.zhaoFY.affection >= 40
+          },
+          {
+            text: "D. 询问卫婕妤近况",
+            nextStoryId: "weiVisit",
+            effects: { wei: 4, heirPressure: -1, moodValue: 1 }
+          }
+        ]
+      },
+
+      palaceFeast: {
+        title: "未央宫宴",
+        image: "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=800&q=80",
+        location: "未央宫·前殿",
+        activity: "宫宴赏乐",
+        text:
+          "宫宴按礼开席，一人一案，耳杯、漆盘都已摆好。王凤与几位近臣在前列，许皇后带后妃列坐。你先让乐府奏雅乐，再让赵飞燕献舞。她舞完后，席间确实热闹了些，赵合德在旁替姐姐谢恩，话说得很顺。\n\n班婕妤没有抢风头，只在你问起时答了两句。许皇后神色平稳，却提醒你宴后赏赐应按位分，不可乱了规矩。若你处理得当，这场宴会能增威望；若偏心太重，后宫会有议论。",
+        options: [
+          {
+            text: "A. 按位分赏赐，稳住规矩【需银两25】",
+            nextStoryId: "courtMorning",
+            effects: { money: -25, prestige: 4, xuQueen: 3, ban: 2, zhaoFY: 2, zhaoHD: 2 },
+            condition: () => gameState.money >= 25
+          },
+          {
+            text: "B. 额外赏赵氏姐妹【需银两20】",
+            nextStoryId: "zhaoDance",
+            effects: { money: -20, zhaoFY: 4, zhaoHD: 4, moodValue: 3, prestige: -2 },
+            condition: () => gameState.money >= 20
+          },
+          {
+            text: "C. 让张放陪游上林苑【需张放关系50】",
+            nextStoryId: "shanglin",
+            effects: { zhangFang: 4, moodValue: 4, prestige: -1 },
+            condition: () => gameState.ministers.zhangFang.relation >= 50
+          },
+          {
+            text: "D. 宴后回椒房殿",
+            nextStoryId: "xuQueen",
+            effects: { xuQueen: 3, moodValue: 2, heirPressure: -1 }
+          }
+        ]
+      },
+
+      weiVisit: {
+        title: "偏殿问候",
+        image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+        location: "未央宫·后宫偏殿",
+        activity: "探望卫婕妤",
+        text:
+          "卫婕妤住处不算显眼，陈设也简单。她见你来，先请你坐下，又让宫人端来温浆。你问她在宫中是否受委屈，她只说各宫规矩清楚，自己不敢多求。\n\n你留意到她说话谨慎，不主动议论旁人。她提到近来医官建议少熬夜、多进粟米羹，你便让少府按例添些滋养饮食。卫婕妤谢恩时很认真。这样的小安排不张扬，却能让后宫知道，你并非只看热闹和舞乐。",
+        options: [
+          {
+            text: "A. 赐卫婕妤养身食单【需银两8】",
+            nextStoryId: "restHall",
+            effects: { money: -8, wei: 5, body: 1, heirPressure: -2 },
+            condition: () => gameState.money >= 8
+          },
+          {
+            text: "B. 让许皇后多照看偏殿",
+            nextStoryId: "xuQueen",
+            effects: { xuQueen: 2, wei: 3, prestige: 1 }
+          },
+          {
+            text: "C. 召班婕妤来同坐",
+            nextStoryId: "banReading",
+            effects: { ban: 2, wei: 2, learning: 1 }
+          },
+          {
+            text: "D. 去前殿处理奏牍",
+            nextStoryId: "courtMorning",
+            effects: { prestige: 3, moodValue: -1 }
+          }
+        ]
+      },
+
+      courtMorning: {
+        title: "宣室奏牍",
+        image: "https://images.unsplash.com/photo-1455885666463-9b8d8d539fa5?auto=format&fit=crop&w=800&q=80",
+        location: "未央宫·宣室殿",
+        activity: "处理奏牍",
+        text:
+          "宣室殿的奏牍堆在案上，王凤先报几件朝事，又提到宗亲入朝请安。你没有把话说得太重，只让尚书把要紧事分开呈上。班伯进言，说天子新立，若能勤见大臣，宫中宴游也不会被外头议论。\n\n你听了没有发怒，只让他留下几卷简牍。张放也在殿外等召，说上林苑近日适合散心。你若勤政，威望会上来；若常宴游，心情会轻松，但王氏和言官都会盯着。",
+        options: [
+          {
+            text: "A. 勤政一月，压低外戚声势【需学识65】",
+            nextStoryId: "courtMorning",
+            effects: { learning: 2, prestige: 4, wangInfluence: -3, moodValue: -2 },
+            condition: () => gameState.attrs.learning >= 65
+          },
+          {
+            text: "B. 召刘康入宫谈音律【需威望60】",
+            nextStoryId: "liuKangVisit",
+            effects: { liuKang: 4, moodValue: 3, prestige: 1 },
+            condition: () => gameState.attrs.prestige >= 60
+          },
+          {
+            text: "C. 允张放陪游上林苑【需心情45】",
+            nextStoryId: "shanglin",
+            effects: { zhangFang: 4, moodValue: 4, prestige: -1 },
+            condition: () => gameState.moodValue >= 45
+          },
+          {
+            text: "D. 回后宫办小会",
+            nextStoryId: "haremTea",
+            effects: { xuQueen: 2, ban: 2, moodValue: 2 }
+          }
+        ]
+      },
+
+      liuKangVisit: {
+        title: "定陶王入宫",
+        image: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=800&q=80",
+        location: "未央宫·便殿",
+        activity: "宗亲清谈",
+        text:
+          "刘康入宫请安，言行很守分。他带来一名乐工，演奏旧曲。你问他封国近况，他只说百姓安稳，未多谈朝事。两兄弟坐在一处，话题多在音律和旧日宫中礼仪。\n\n王凤的人也在殿外等着记录来往，你没有久留刘康，只赐了酒食。刘康离开前说，陛下若喜音律，定陶可进几卷乐谱。你知道宗亲往来需拿捏，亲近能增兄弟情，也可能引起王氏留意。",
+        options: [
+          {
+            text: "A. 收下定陶乐谱【需刘康关系48】",
+            nextStoryId: "palaceFeast",
+            effects: { liuKang: 4, learning: 1, moodValue: 2, addItem: ["定陶乐谱"] },
+            condition: () => gameState.ministers.liuKang.relation >= 48
+          },
+          {
+            text: "B. 保持礼数，减少外议",
+            nextStoryId: "courtMorning",
+            effects: { prestige: 2, wangFeng: 1, liuKang: 1 }
+          },
+          {
+            text: "C. 请刘康参加宫宴【需威望65】",
+            nextStoryId: "palaceFeast",
+            effects: { liuKang: 3, prestige: 2, moodValue: 2 },
+            condition: () => gameState.attrs.prestige >= 65
+          },
+          {
+            text: "D. 宴后召班婕妤评乐",
+            nextStoryId: "banReading",
+            effects: { ban: 3, learning: 2, moodValue: 1 }
+          }
+        ]
+      },
+
+      shanglin: {
+        title: "上林苑游宴",
+        image: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80",
+        location: "上林苑",
+        activity: "游苑散心",
+        text:
+          "你到上林苑散心，张放随侍在侧。他会说玩笑，也知道何时闭嘴。随行宫人备了低度清酒、蒸饼和烤肉，场面不算铺张。\n\n你没有纵马太久，只在苑中走了一圈。张放说，陛下若整日闷在奏牍里，人也会倦。班伯却提醒，外头已有言官议论宴游，最好下月回宣室见几位大臣。你若继续游宴，心情会好；若及时收束，威望也能保住。",
+        options: [
+          {
+            text: "A. 继续小游，赏张放【需银两10】",
+            nextStoryId: "shanglin",
+            effects: { money: -10, zhangFang: 5, moodValue: 4, prestige: -2 },
+            condition: () => gameState.money >= 10
+          },
+          {
+            text: "B. 采纳班伯之言，回朝理政【需威望60】",
+            nextStoryId: "courtMorning",
+            effects: { banBo: 4, prestige: 4, learning: 1, moodValue: -1 },
+            condition: () => gameState.attrs.prestige >= 60
+          },
+          {
+            text: "C. 带乐谱回宫办宴",
+            nextStoryId: "palaceFeast",
+            effects: { moodValue: 3, zhaoFY: 2, zhaoHD: 2 }
+          },
+          {
+            text: "D. 回椒房殿用晚膳",
+            nextStoryId: "xuQueen",
+            effects: { xuQueen: 3, heirPressure: -1, moodValue: 2 }
+          }
+        ]
+      },
+
+      restHall: {
+        title: "宫中安养",
+        image: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=80",
+        location: "未央宫·温室殿",
+        activity: "安养起居",
+        text:
+          "这个月你少饮酒，也少设大宴。医官按时进膳单，少府送来温浆、粟米羹和几样清淡菜。后宫也跟着安静下来，许皇后说这样最好，班婕妤也劝你保重身体。\n\n赵氏姐妹仍派人送来新舞名目，你没有立刻召见，只回了一句下月再看。卫婕妤得了食单，亲自来谢恩。宫中人都看得出，你这月更重起居和规矩。虽然热闹少了些，但议论也少了些。",
+        options: [
+          {
+            text: "A. 继续安养一月【需心情40】",
+            nextStoryId: "restHall",
+            effects: { body: 3, moodValue: 2, heirPressure: -2 },
+            condition: () => gameState.moodValue >= 40
+          },
+          {
+            text: "B. 安养后召许皇后同膳",
+            nextStoryId: "xuQueen",
+            effects: { xuQueen: 4, body: 1, moodValue: 2 }
+          },
+          {
+            text: "C. 安养后读书听赋",
+            nextStoryId: "banReading",
+            effects: { ban: 3, learning: 2 }
+          },
+          {
+            text: "D. 安养后观舞散心",
+            nextStoryId: "zhaoDance",
+            effects: { zhaoFY: 2, zhaoHD: 3, moodValue: 3 }
+          }
+        ]
+      }
+    };
+
+    const shopItems = [
+      {
+        code: "a",
+        name: "蜀锦一匹",
+        price: 10,
+        desc: "威望+1，心情+1",
+        effects: { prestige: 1, moodValue: 1, addItem: ["蜀锦一匹"] }
+      },
+      {
+        code: "b",
+        name: "鎏金博山炉",
+        price: 15,
+        desc: "威望+2，心情+1",
+        effects: { prestige: 2, moodValue: 1, addItem: ["鎏金博山炉"] }
+      },
+      {
+        code: "c",
+        name: "宫廷典籍一函",
+        price: 12,
+        desc: "学识+2",
+        effects: { learning: 2, addItem: ["宫廷典籍一函"] }
+      }
+    ];
+
+    const haremNewsPool = [
+      "许皇后令椒房女官核对各宫月例，宫人说这月赏赐比上月清楚。",
+      "班婕妤在增成舍馆抄写辞赋，几名女官私下称她说话稳妥。",
+      "赵飞燕在昭阳舍练新舞，乐府小吏说她步法轻快，容易得人眼缘。",
+      "赵合德挑了新妆样，昭阳舍宫人说她最会把话说得讨喜。",
+      "卫婕妤向医官问起养身食单，偏殿这月用膳更有规律。",
+      "王太后问起后宫小会，称皇后若能理顺礼数，宫中就少些闲话。",
+      "王凤在前朝催尚书整理奏牍，近臣说大司马近日仍很强势。",
+      "张放在殿外候召，宫人说他最会陪陛下散心，却也容易招言官议论。",
+      "班伯提醒近侍，宴游可有，奏牍不可久置，几名郎官听后点头。",
+      "定陶王刘康进献乐谱的消息传到乐府，乐工们都想知道是否会入宫宴。"
+    ];
+
+    const dom = {};
+
+    document.addEventListener("DOMContentLoaded", () => {
+      [
+        "timeText", "nameText", "ageText", "locationText", "activityText",
+        "moneyText", "itemText", "moodText", "moodBar", "heirText", "heirBar",
+        "bodyText", "martialText", "learningText", "prestigeText",
+        "bodyBar", "martialBar", "learningBar", "prestigeBar",
+        "turnText", "storyImage", "storyTitle", "storyText", "optionBox",
+        "haremNewsText", "consortBox", "ministerBox", "shopBox",
+        "warningBadge", "warningText", "logText", "influenceText"
+      ].forEach(id => dom[id] = document.getElementById(id));
+
+      refreshHaremNews();
+      updateUI();
+    });
+
+    function getDateInfo() {
+      const monthNames = ["正月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "腊月"];
+      const absMonth = 4 + gameState.monthPointer;
+      const globalYear = Math.floor(absMonth / 12) + 1;
+      const monthIndex = absMonth % 12;
+      const monthName = monthNames[monthIndex];
+
+      let season = "春季";
+      if (monthIndex >= 3 && monthIndex <= 5) season = "夏季";
+      if (monthIndex >= 6 && monthIndex <= 8) season = "秋季";
+      if (monthIndex >= 9 || monthIndex <= 0) season = "冬季";
+
+      let reign = "建始";
+      let reignYear = globalYear;
+
+      if (globalYear >= 5 && globalYear <= 8) {
+        reign = "河平";
+        reignYear = globalYear - 4;
+      } else if (globalYear >= 9 && globalYear <= 12) {
+        reign = "阳朔";
+        reignYear = globalYear - 8;
+      } else if (globalYear >= 13 && globalYear <= 16) {
+        reign = "鸿嘉";
+        reignYear = globalYear - 12;
+      } else if (globalYear >= 17 && globalYear <= 20) {
+        reign = "永始";
+        reignYear = globalYear - 16;
+      } else if (globalYear >= 21 && globalYear <= 24) {
+        reign = "元延";
+        reignYear = globalYear - 20;
+      } else if (globalYear >= 25) {
+        reign = "绥和";
+        reignYear = globalYear - 24;
+      }
+
+      return {
+        text: `${reign}${reignYear}年${season}${monthName}`,
+        reign,
+        reignYear,
+        season,
+        monthName,
+        globalYear,
+        monthIndex
+      };
+    }
+
+    function updateUI() {
+      const story = storyData[gameState.currentStoryId];
+      const date = getDateInfo();
+
+      gameState.location = story.location;
+      gameState.activity = story.activity;
+
+      dom.timeText.textContent = date.text;
+      dom.nameText.textContent = gameState.name;
+      dom.ageText.textContent = `${gameState.age}岁`;
+      dom.locationText.textContent = gameState.location;
+      dom.activityText.textContent = gameState.activity;
+      dom.moneyText.textContent = `${gameState.money}金`;
+      dom.itemText.textContent = gameState.items.slice(-2).join("、");
+      dom.moodText.textContent = moodMap(gameState.moodValue);
+      dom.moodBar.style.width = `${clamp(gameState.moodValue)}%`;
+      dom.heirText.textContent = `${gameState.heirPressure}/100`;
+      dom.heirBar.style.width = `${clamp(gameState.heirPressure)}%`;
+
+      dom.bodyText.textContent = gameState.attrs.body;
+      dom.martialText.textContent = gameState.attrs.martial;
+      dom.learningText.textContent = gameState.attrs.learning;
+      dom.prestigeText.textContent = gameState.attrs.prestige;
+
+      dom.bodyBar.style.width = `${clamp(gameState.attrs.body)}%`;
+      dom.martialBar.style.width = `${clamp(gameState.attrs.martial)}%`;
+      dom.learningBar.style.width = `${clamp(gameState.attrs.learning)}%`;
+      dom.prestigeBar.style.width = `${clamp(gameState.attrs.prestige)}%`;
+
+      dom.turnText.textContent = `回合 ${gameState.turn}`;
+      dom.storyTitle.textContent = story.title;
+      dom.storyText.innerHTML = story.text.replace(/\n/g, "<br>");
+
+      if (story.image) {
+        dom.storyImage.src = story.image;
+        dom.storyImage.style.display = "block";
+      } else {
+        dom.storyImage.style.display = "none";
+      }
+
+      dom.haremNewsText.innerHTML = gameState.haremNews.join("\n").replace(/\n/g, "<br>");
+      dom.influenceText.textContent = `王氏影响 ${gameState.wangInfluence}`;
+      dom.logText.innerHTML = gameState.lastLog.replace(/\n/g, "<br>");
+
+      const monthsToLargeSelection = Math.max(0, 44 - gameState.monthPointer);
+      dom.warningBadge.textContent = `${monthsToLargeSelection}月`;
+      dom.warningText.innerHTML =
+        `大型采选与宗亲议储议题尚未临近。<br>` +
+        `距下一轮大型宫廷采选约 ${monthsToLargeSelection} 月。<br>` +
+        `当前重点：稳住椒房礼数、控制王氏外戚影响、平衡后妃好感。`;
+
+      renderOptions(story);
+      renderConsorts();
+      renderMinisters();
+      renderShop();
+    }
+
+    function renderOptions(story) {
+      dom.optionBox.innerHTML = "";
+
+      story.options.forEach(option => {
+        const button = document.createElement("button");
+        const allowed = !option.condition || option.condition();
+
+        button.textContent = allowed ? option.text : `${option.text} 🔒 条件不足`;
+        button.disabled = !allowed;
+
+        button.addEventListener("click", () => {
+          handleOptionClick(option);
+        });
+
+        dom.optionBox.appendChild(button);
+      });
+    }
+
+    function renderConsorts() {
+      dom.consortBox.innerHTML = "";
+
+      Object.keys(gameState.npcs).forEach(key => {
+        const npc = gameState.npcs[key];
+        const card = document.createElement("div");
+        card.className = "mini-card";
+        card.innerHTML = `
+          <div class="mini-top">
+            <span>🌺 ${npc.name}</span>
+            <span>${npc.affection}/100</span>
+          </div>
+          <div>${npc.role}｜${npc.place}</div>
+          <div>性格：${npc.trait}</div>
+          <div>衣饰：${npc.outfit}</div>
+          <div class="bar"><span style="width:${clamp(npc.affection)}%"></span></div>
+        `;
+        dom.consortBox.appendChild(card);
+      });
+    }
+
+    function renderMinisters() {
+      dom.ministerBox.innerHTML = "";
+
+      Object.keys(gameState.ministers).forEach(key => {
+        const npc = gameState.ministers[key];
+        const card = document.createElement("div");
+        card.className = "mini-card";
+        card.innerHTML = `
+          <div class="mini-top">
+            <span>🏛 ${npc.name}</span>
+            <span>${npc.relation}/100</span>
+          </div>
+          <div>${npc.role}</div>
+          <div>评语：${npc.trait}</div>
+          <div class="bar"><span style="width:${clamp(npc.relation)}%"></span></div>
+        `;
+        dom.ministerBox.appendChild(card);
+      });
+    }
+
+    function renderShop() {
+      dom.shopBox.innerHTML = "";
+
+      shopItems.forEach(item => {
+        const button = document.createElement("button");
+        button.textContent = `${item.code}. ${item.name}｜${item.price}金｜${item.desc}`;
+        button.disabled = gameState.money < item.price;
+        button.addEventListener("click", () => buyItem(item));
+        dom.shopBox.appendChild(button);
+      });
+    }
+
+    function handleOptionClick(option) {
+      applyEffects(option.effects || {});
+
+      gameState.currentStoryId = option.nextStoryId;
+      gameState.turn += 1;
+      gameState.monthPointer += 1;
+
+      if ((4 + gameState.monthPointer) % 12 === 0) {
+        gameState.age += 1;
+      }
+
+      gameState.money += 5;
+      gameState.heirPressure = clamp(gameState.heirPressure + 1);
+
+      refreshHaremNews();
+      triggerMonthlyEvent();
+
+      const effectText = buildEffectText(option.effects || {});
+      gameState.lastLog =
+        `你选择了：${option.text}\n` +
+        `${effectText}\n` +
+        `少府月入：私库 +5金。`;
+
+      updateUI();
+    }
+
+    function buyItem(item) {
+      if (gameState.money < item.price) return;
+
+      gameState.money -= item.price;
+      applyEffects(item.effects);
+
+      gameState.lastLog =
+        `你购买了：${item.code}. ${item.name}\n` +
+        `${buildEffectText(item.effects)}\n` +
+        `当前物品：${gameState.items.join("、")}`;
+
+      updateUI();
+    }
+
+    function applyEffects(effects) {
+      Object.keys(effects).forEach(key => {
+        const value = effects[key];
+
+        if (key === "addItem" && Array.isArray(value)) {
+          value.forEach(item => {
+            if (!gameState.items.includes(item)) {
+              gameState.items.push(item);
+            }
+          });
+          return;
+        }
+
+        if (key === "money") {
+          gameState.money = Math.max(0, gameState.money + value);
+          return;
+        }
+
+        if (key === "moodValue") {
+          gameState.moodValue = clamp(gameState.moodValue + value);
+          return;
+        }
+
+        if (key === "heirPressure") {
+          gameState.heirPressure = clamp(gameState.heirPressure + value);
+          return;
+        }
+
+        if (key === "wangInfluence") {
+          gameState.wangInfluence = clamp(gameState.wangInfluence + value);
+          return;
+        }
+
+        if (key in gameState.attrs) {
+          gameState.attrs[key] = clamp(gameState.attrs[key] + value);
+          return;
+        }
+
+        if (key in gameState.npcs) {
+          gameState.npcs[key].affection = clamp(gameState.npcs[key].affection + value);
+          return;
+        }
+
+        if (key in gameState.ministers) {
+          gameState.ministers[key].relation = clamp(gameState.ministers[key].relation + value);
+        }
+      });
+    }
+
+    function buildEffectText(effects) {
+      const lines = [];
+
+      Object.keys(effects).forEach(key => {
+        const value = effects[key];
+        const sign = typeof value === "number" && value >= 0 ? "+" : "";
+
+        if (key === "money") lines.push(`私库 ${sign}${value}金`);
+        if (key === "body") lines.push(`体质 ${sign}${value}`);
+        if (key === "martial") lines.push(`武力 ${sign}${value}`);
+        if (key === "learning") lines.push(`学识 ${sign}${value}`);
+        if (key === "prestige") lines.push(`威望 ${sign}${value}`);
+        if (key === "moodValue") lines.push(`心情 ${sign}${value}`);
+        if (key === "heirPressure") lines.push(`皇嗣议题 ${sign}${value}`);
+        if (key === "wangInfluence") lines.push(`王氏影响 ${sign}${value}`);
+
+        if (gameState.npcs[key]) {
+          lines.push(`${gameState.npcs[key].name} 好感 ${sign}${value}`);
+        }
+
+        if (gameState.ministers[key]) {
+          lines.push(`${gameState.ministers[key].name} 关系 ${sign}${value}`);
+        }
+
+        if (key === "addItem") {
+          lines.push(`获得物品：${value.join("、")}`);
+        }
+      });
+
+      return lines.length ? lines.join("\n") : "本月没有明显数值变化。";
+    }
+
+    function refreshHaremNews() {
+      const pool = [...haremNewsPool].sort(() => Math.random() - 0.5).slice(0, 4);
+      const date = getDateInfo();
+      gameState.haremNews = pool.map((text, index) => `${index + 1}. 「${date.text}」${text}`);
+    }
+
+    function triggerMonthlyEvent() {
+      const roll = Math.random();
+
+      if (roll < 0.25) {
+        gameState.moodValue = clamp(gameState.moodValue + 1);
+        gameState.lastLog += "\n月度小事：宫中饮食顺口，心情 +1。";
+      } else if (roll < 0.5) {
+        gameState.attrs.learning = clamp(gameState.attrs.learning + 1);
+        gameState.lastLog += "\n月度小事：尚书呈来旧制简牍，学识 +1。";
+      } else if (roll < 0.75) {
+        gameState.attrs.prestige = clamp(gameState.attrs.prestige + 1);
+        gameState.lastLog += "\n月度小事：宫中礼数平稳，威望 +1。";
+      } else {
+        gameState.wangInfluence = clamp(gameState.wangInfluence + 1);
+        gameState.lastLog += "\n月度小事：王氏宗亲入宫问安，王氏影响 +1。";
+      }
+    }
+  </script>
+</body>
+</html>
